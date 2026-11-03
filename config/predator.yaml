@@ -1,0 +1,96 @@
+# =============================================================================
+# PREDATOR NET — Neuron Absorption Configuration
+# =============================================================================
+# Controls all PREDATOR-specific parameters: importance scoring, compatibility,
+# absorption, validation gating, and iterative loop settings.
+
+predator:
+  enabled: true
+
+  # -------------------------------------------------------------------------
+  # Neuron Importance Scoring (Spec §20–22)
+  # -------------------------------------------------------------------------
+  importance:
+    gradient_weight: 0.70       # α for combined score
+    weight_weight: 0.30         # (1 - α) for combined score
+    calibration_samples: 50000  # Subset size for importance calculation
+    calibration_batch_size: 512
+
+  # -------------------------------------------------------------------------
+  # Weak / Strong Classification (Spec §23)
+  # -------------------------------------------------------------------------
+  classification:
+    policy: percentile          # percentile | relative | hybrid
+    weak_percentile: 15         # Bottom X% = weak candidates
+    strong_percentile: 30       # Top X% = strong candidates
+    # For relative policy:
+    weak_factor: 0.3            # importance < median * weak_factor
+    # For hybrid policy:
+    min_activity_threshold: 0.01
+
+  # -------------------------------------------------------------------------
+  # Compatibility (Spec §24–25)
+  # -------------------------------------------------------------------------
+  compatibility:
+    activation_weight: 0.70     # β for compatibility
+    weight_similarity_weight: 0.30  # (1 - β)
+    minimum_similarity: 0.70    # Reject absorption if below
+
+  # -------------------------------------------------------------------------
+  # Absorption Mechanism (Spec §26–27)
+  # -------------------------------------------------------------------------
+  absorption:
+    mode: light                 # light | full
+    # PREDATOR-LIGHT: outgoing weight transfer
+    alpha_min: 0.05
+    alpha_max: 0.50
+    epsilon: 1.0e-8
+    # PREDATOR-FULL: also incoming weight/bias transfer
+    gamma: 0.3                  # Incoming weight absorption coefficient
+
+  # -------------------------------------------------------------------------
+  # Validation Gate (Spec §30–31)
+  # -------------------------------------------------------------------------
+  validation:
+    max_f1_drop: 0.005
+    max_recall_drop: 0.005
+
+  # -------------------------------------------------------------------------
+  # Minimum Network Width (Spec §34)
+  # -------------------------------------------------------------------------
+  minimum_width:
+    layer_1: 16
+    layer_2: 8
+    layer_3: 8
+
+  # -------------------------------------------------------------------------
+  # Layer Selection Strategy (Spec §37)
+  # -------------------------------------------------------------------------
+  layer_strategy:
+    mode: deepest_first         # deepest_first | sequential | weakest_first | round_robin
+
+  # -------------------------------------------------------------------------
+  # Iteration Control (Spec §38)
+  # -------------------------------------------------------------------------
+  iteration:
+    max_iterations: 200
+    neurons_per_step: 1         # 1 = conservative, >1 = batch mode
+    max_consecutive_rejections: 10  # Stop if this many rejections in a row
+
+  # -------------------------------------------------------------------------
+  # Fine-Tuning After Absorption (Spec §39)
+  # -------------------------------------------------------------------------
+  fine_tune:
+    enabled: true
+    epochs: 3
+    learning_rate: 0.0001
+
+# ---------------------------------------------------------------------------
+# Knowledge Distillation — PREDATOR-D (Spec §32)
+# ---------------------------------------------------------------------------
+distillation:
+  enabled: false
+  temperature: 2.0
+  lambda: 0.3                   # Weight for distillation loss
+  fine_tune_epochs: 5
+  learning_rate: 0.0001

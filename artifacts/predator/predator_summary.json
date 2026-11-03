@@ -1,0 +1,83 @@
+{
+  "model_name": "PREDATOR_Compressed_ANN",
+  "initial_architecture": [
+    41,
+    128,
+    64,
+    32,
+    1
+  ],
+  "final_architecture": [
+    41,
+    128,
+    64,
+    32,
+    1
+  ],
+  "initial_hidden_neurons": 224,
+  "final_hidden_neurons": 224,
+  "neuron_reduction_percent": 0.0,
+  "initial_parameters": {
+    "total_parameters": 15745,
+    "trainable_parameters": 15745,
+    "non_trainable_parameters": 0
+  },
+  "final_parameters": {
+    "total_parameters": 15745,
+    "trainable_parameters": 15745,
+    "non_trainable_parameters": 0
+  },
+  "parameter_reduction_percent": 0.0,
+  "initial_model_size": {
+    "size_bytes": 62980,
+    "size_kb": 61.50390625,
+    "size_mb": 0.060062408447265625
+  },
+  "final_model_size": {
+    "size_bytes": 62980,
+    "size_kb": 61.50390625,
+    "size_mb": 0.060062408447265625
+  },
+  "optimal_threshold": 0.85,
+  "test_loss": 0.4300739675335869,
+  "metrics": {
+    "threshold": 0.85,
+    "accuracy": 0.9978388391478852,
+    "precision": 0.983016983016983,
+    "recall": 0.9553398058252427,
+    "f1": 0.9689807976366323,
+    "macro_f1": 0.9839306078069603,
+    "balanced_accuracy": 0.9773676377015691,
+    "roc_auc": 0.9984225242994645,
+    "pr_auc": 0.9938524437182485,
+    "false_positive_rate": 0.0006045304221044771,
+    "false_negative_rate": 0.04466019417475728,
+    "confusion_matrix": {
+      "tn": 28104,
+      "fp": 17,
+      "fn": 46,
+      "tp": 984
+    },
+    "total_samples": 29151
+  },
+  "latency_and_throughput": {
+    "device": "cpu",
+    "single_sample_latency_ms": {
+      "mean": 0.06614199999603443,
+      "median": 0.04904999968857737,
+      "p95": 0.13814499961881663,
+      "std": 0.039578070198271253
+    },
+    "batch_latency_ms": {
+      "batch_size": 1024,
+      "mean": 0.28176600018923637,
+      "median": 0.263200000517827
+    },
+    "throughput_samples_per_sec": 3634221.3017620053
+  },
+  "absorption_events": {
+    "total_attempts": 10,
+    "accepted_absorptions": 0,
+    "rejected_absorptions": 10
+  }
+}

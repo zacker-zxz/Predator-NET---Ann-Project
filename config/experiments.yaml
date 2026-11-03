@@ -1,0 +1,102 @@
+# =============================================================================
+# PREDATOR NET — Experiments Configuration
+# =============================================================================
+# Defines the 6-model comparison and ablation study settings.
+
+experiments:
+  # -------------------------------------------------------------------------
+  # Core 6-Model Comparison (Spec §40)
+  # -------------------------------------------------------------------------
+  models:
+    - name: dense_ann
+      description: "Baseline dense ANN (128→64→32)"
+      enabled: true
+
+    - name: random_pruning
+      description: "Random structured neuron removal (same reduction as PREDATOR)"
+      enabled: true
+
+    - name: structured_pruning
+      description: "Magnitude-based structured pruning (L1-norm)"
+      enabled: true
+
+    - name: predator_light
+      description: "PREDATOR-LIGHT: outgoing weight transfer only"
+      enabled: true
+
+    - name: predator_full
+      description: "PREDATOR-FULL: outgoing + incoming weight transfer"
+      enabled: true
+
+    - name: predator_d
+      description: "PREDATOR-D: absorption + knowledge distillation"
+      enabled: true
+
+  # -------------------------------------------------------------------------
+  # Ablation Studies (Spec §45)
+  # -------------------------------------------------------------------------
+  ablations:
+    - name: no_knowledge_transfer
+      description: "Remove weak neurons without weight transfer"
+      enabled: true
+
+    - name: random_strong_target
+      description: "Absorb into random strong neuron instead of most compatible"
+      enabled: true
+
+    - name: weight_similarity_only
+      description: "Compatibility uses only incoming-weight cosine similarity"
+      enabled: true
+
+    - name: activation_similarity_only
+      description: "Compatibility uses only activation cosine similarity"
+      enabled: true
+
+    - name: no_distillation
+      description: "Compare PREDATOR vs PREDATOR-D"
+      enabled: true
+
+    - name: importance_comparison
+      description: "weight-magnitude vs activation-gradient vs combined"
+      enabled: true
+
+  # -------------------------------------------------------------------------
+  # Feature Ablation (Spec §47)
+  # -------------------------------------------------------------------------
+  feature_ablation:
+    enabled: true
+    groups_to_remove:
+      - ports
+      - tcp_flags
+      - timing
+      - packet_statistics
+      - byte_statistics
+
+  # -------------------------------------------------------------------------
+  # Robustness Testing (Spec §46)
+  # -------------------------------------------------------------------------
+  robustness:
+    enabled: true
+    perturbations:
+      - type: feature_noise
+        noise_std: 0.05
+      - type: packet_count_perturbation
+        perturbation_pct: 0.10
+      - type: timing_perturbation
+        perturbation_pct: 0.10
+      - type: byte_count_perturbation
+        perturbation_pct: 0.10
+      - type: missing_feature
+        missing_pct: 0.05
+
+  # -------------------------------------------------------------------------
+  # Inference Evaluation (Spec §43)
+  # -------------------------------------------------------------------------
+  inference:
+    warmup_runs: 50
+    timing_runs: 200
+    batch_sizes:
+      - 1
+      - 32
+      - 256
+      - 1024

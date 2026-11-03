@@ -1,0 +1,260 @@
+{
+  "Model A (Dense ANN)": {
+    "metrics": {
+      "threshold": 0.5045454545454545,
+      "accuracy": 0.9986666666666667,
+      "precision": 0.9933774834437086,
+      "recall": 1.0,
+      "f1": 0.9966777408637874,
+      "macro_f1": 0.9979218562534116,
+      "balanced_accuracy": 0.9991666666666666,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0000000000000002,
+      "false_positive_rate": 0.0016666666666666668,
+      "false_negative_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 599,
+        "fp": 1,
+        "fn": 0,
+        "tp": 150
+      },
+      "total_samples": 750
+    },
+    "latency": {
+      "device": "cpu",
+      "single_sample_latency_ms": {
+        "mean": 0.047009999834699556,
+        "median": 0.04604999958246481,
+        "p95": 0.0544249992344703,
+        "std": 0.0036773495915976276
+      },
+      "batch_latency_ms": {
+        "batch_size": 1024,
+        "mean": 0.2568379998410819,
+        "median": 0.1764999997249106
+      },
+      "throughput_samples_per_sec": 3986948.9741922864
+    },
+    "threshold": 0.5045454545454545,
+    "hidden_dims": [
+      128,
+      64,
+      32
+    ]
+  },
+  "Model D (PREDATOR-Light)": {
+    "metrics": {
+      "threshold": 0.8954545454545455,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "balanced_accuracy": 1.0,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0000000000000002,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 600,
+        "fp": 0,
+        "fn": 0,
+        "tp": 150
+      },
+      "total_samples": 750
+    },
+    "latency": {
+      "device": "cpu",
+      "single_sample_latency_ms": {
+        "mean": 0.04677199984143954,
+        "median": 0.04594999973051017,
+        "p95": 0.04979499963155831,
+        "std": 0.0029151355127658577
+      },
+      "batch_latency_ms": {
+        "batch_size": 1024,
+        "mean": 0.19560600005206652,
+        "median": 0.17574999947100878
+      },
+      "throughput_samples_per_sec": 5235013.239509172
+    },
+    "threshold": 0.8954545454545455,
+    "hidden_dims": [
+      128,
+      64,
+      31
+    ]
+  },
+  "Model B (Random Pruning)": {
+    "metrics": {
+      "threshold": 0.44090909090909086,
+      "accuracy": 0.9986666666666667,
+      "precision": 0.9933774834437086,
+      "recall": 1.0,
+      "f1": 0.9966777408637874,
+      "macro_f1": 0.9979218562534116,
+      "balanced_accuracy": 0.9991666666666666,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0000000000000002,
+      "false_positive_rate": 0.0016666666666666668,
+      "false_negative_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 599,
+        "fp": 1,
+        "fn": 0,
+        "tp": 150
+      },
+      "total_samples": 750
+    },
+    "latency": {
+      "device": "cpu",
+      "single_sample_latency_ms": {
+        "mean": 0.03436400009377394,
+        "median": 0.03389999983482994,
+        "p95": 0.03553000115061877,
+        "std": 0.0025078884387394087
+      },
+      "batch_latency_ms": {
+        "batch_size": 1024,
+        "mean": 0.21804199979669647,
+        "median": 0.16969999978755368
+      },
+      "throughput_samples_per_sec": 4696342.910791421
+    },
+    "threshold": 0.44090909090909086,
+    "hidden_dims": [
+      128,
+      64,
+      31
+    ]
+  },
+  "Model C (Structured Pruning)": {
+    "metrics": {
+      "threshold": 0.48636363636363633,
+      "accuracy": 0.9986666666666667,
+      "precision": 0.9933774834437086,
+      "recall": 1.0,
+      "f1": 0.9966777408637874,
+      "macro_f1": 0.9979218562534116,
+      "balanced_accuracy": 0.9991666666666666,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0000000000000002,
+      "false_positive_rate": 0.0016666666666666668,
+      "false_negative_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 599,
+        "fp": 1,
+        "fn": 0,
+        "tp": 150
+      },
+      "total_samples": 750
+    },
+    "latency": {
+      "device": "cpu",
+      "single_sample_latency_ms": {
+        "mean": 0.034795999781636056,
+        "median": 0.03440000000409782,
+        "p95": 0.035355000818526605,
+        "std": 0.0020404863717763825
+      },
+      "batch_latency_ms": {
+        "batch_size": 1024,
+        "mean": 0.1816639998651226,
+        "median": 0.15769999936310342
+      },
+      "throughput_samples_per_sec": 5636779.993616095
+    },
+    "threshold": 0.48636363636363633,
+    "hidden_dims": [
+      128,
+      64,
+      31
+    ]
+  },
+  "Model E (PREDATOR-Full)": {
+    "metrics": {
+      "threshold": 0.8863636363636364,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "balanced_accuracy": 1.0,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 600,
+        "fp": 0,
+        "fn": 0,
+        "tp": 150
+      },
+      "total_samples": 750
+    },
+    "latency": {
+      "device": "cpu",
+      "single_sample_latency_ms": {
+        "mean": 0.04498599992075469,
+        "median": 0.044800000068789814,
+        "p95": 0.046010000096430304,
+        "std": 0.0020614567278848628
+      },
+      "batch_latency_ms": {
+        "batch_size": 1024,
+        "mean": 0.19852000012178905,
+        "median": 0.1666999996814411
+      },
+      "throughput_samples_per_sec": 5158170.458250007
+    },
+    "threshold": 0.8863636363636364,
+    "hidden_dims": [
+      128,
+      64,
+      31
+    ]
+  },
+  "Model F (PREDATOR-D)": {
+    "metrics": {
+      "threshold": 0.8409090909090909,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "balanced_accuracy": 1.0,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0000000000000002,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 600,
+        "fp": 0,
+        "fn": 0,
+        "tp": 150
+      },
+      "total_samples": 750
+    },
+    "latency": {
+      "device": "cpu",
+      "single_sample_latency_ms": {
+        "mean": 0.03429799995501526,
+        "median": 0.03370000013092067,
+        "p95": 0.036475000160862685,
+        "std": 0.0026036504013089014
+      },
+      "batch_latency_ms": {
+        "batch_size": 1024,
+        "mean": 0.20038599999679718,
+        "median": 0.16854999921633862
+      },
+      "throughput_samples_per_sec": 5110137.434832607
+    },
+    "threshold": 0.8409090909090909,
+    "hidden_dims": [
+      128,
+      64,
+      31
+    ]
+  }
+}
