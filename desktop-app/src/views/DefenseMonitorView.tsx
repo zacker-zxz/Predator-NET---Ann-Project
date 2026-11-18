@@ -42,6 +42,7 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
   const latestAlert = activeAlerts[0];
   const hasActiveThreat = latestAlert && !latestAlert.mitigated;
   const isMitigatedThreat = latestAlert && latestAlert.mitigated && isAttack;
+  const displayTarget = latestAlert?.target ? latestAlert.target.replace(/^Target Server:\s*/i, '') : '';
 
   // Continuous live baseline noise fluctuation so the threat meter moves realistically even during quiet/benign traffic
   const [baselineJitter, setBaselineJitter] = useState<number>(1.2);
@@ -72,64 +73,79 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden p-6 gap-5 bg-[#0B0F17]">
-      {/* Top Banner Alert (Shown when attack is detected) */}
+      {/* Top Banner Alert (Active Intrusion Detected) */}
       {hasActiveThreat ? (
-        <div className="bg-rose-950/90 border-2 border-rose-500 rounded-xl p-4 flex items-center justify-between shadow-2xl shadow-rose-950/60 animate-pulse">
-          <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-rose-600 flex items-center justify-center shrink-0 shadow-lg shadow-rose-600/50">
-              <ShieldAlert className="w-6 h-6 text-white" />
+        <div className="bg-[#141016] border-l-4 border-l-rose-500 border-y border-r border-rose-500/25 rounded-xl p-4 flex items-center justify-between gap-4 shadow-sm">
+          <div className="flex items-center gap-3.5 min-w-0">
+            {/* Crisp, non-glowing icon badge */}
+            <div className="w-10 h-10 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center shrink-0">
+              <ShieldAlert className="w-5 h-5 text-rose-400" />
             </div>
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="text-[11px] font-mono font-bold bg-rose-500 text-white px-2.5 py-0.5 rounded shadow">
+
+            <div className="min-w-0">
+              {/* Top row: Badge + Attack Type + Confidence */}
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-rose-500/15 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded leading-none">
                   INTRUSION ALERT
                 </span>
-                <span className="text-white font-bold text-base tracking-wide">
+                <span className="text-white font-semibold text-sm tracking-normal">
                   {latestAlert.attack_type}
                 </span>
-                <span className="text-xs font-mono text-rose-300">
-                  Confidence: {(latestAlert.confidence * 100).toFixed(1)}%
+                <span className="text-[11px] font-mono text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800">
+                  Confidence: <strong className="text-slate-200">{(latestAlert.confidence * 100).toFixed(1)}%</strong>
                 </span>
               </div>
-              <div className="text-xs text-slate-300 font-mono mt-1 flex items-center gap-4">
-                <span>Attacker IP: <strong className="text-rose-200 bg-rose-900/50 px-1.5 py-0.5 rounded border border-rose-700/60">{latestAlert.src_ip}</strong></span>
-                <span>Target: <strong className="text-white">{latestAlert.target}</strong></span>
-                <span className="text-amber-400 font-semibold">Manual Firewall Block Required</span>
+
+              {/* Bottom metadata row */}
+              <div className="text-xs text-slate-300 font-mono mt-1.5 flex items-center gap-3 flex-wrap">
+                <span className="text-slate-400">
+                  Attacker IP: <code className="text-rose-300 bg-slate-900 px-2 py-0.5 rounded border border-rose-500/30 font-semibold">{latestAlert.src_ip}</code>
+                </span>
+                <span className="text-slate-700">•</span>
+                <span className="text-slate-400 truncate max-w-md">
+                  Target: <span className="text-slate-200 font-medium">{displayTarget || latestAlert.target}</span>
+                </span>
+                <span className="text-slate-700">•</span>
+                <span className="text-amber-400 font-medium text-[11px] bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded leading-tight">
+                  Manual Block Required
+                </span>
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+
+          {/* Right Action Button with balanced padding and no glow */}
+          <div className="shrink-0">
             <button
               onClick={() => onBlockIP(latestAlert.src_ip)}
-              className="flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-lg text-xs font-mono font-bold transition shadow-xl shadow-rose-600/40 hover:scale-[1.02] cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white px-4 py-2 rounded-lg text-xs font-mono font-bold tracking-wide transition border border-rose-400/30 cursor-pointer shadow-sm"
             >
-              <Ban className="w-4 h-4" />
-              Block IP in Firewall
+              <Ban className="w-3.5 h-3.5 shrink-0" />
+              <span>Block IP in Firewall</span>
             </button>
           </div>
         </div>
       ) : isMitigatedThreat ? (
-        <div className="bg-emerald-950/80 border border-emerald-500/60 rounded-xl px-5 py-3.5 flex items-center justify-between shadow-lg">
-          <div className="flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40">
+        <div className="bg-[#0D1513] border-l-4 border-l-emerald-500 border-y border-r border-emerald-500/25 rounded-xl px-5 py-3.5 flex items-center justify-between gap-4 shadow-sm">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0">
               <CheckCircle className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
               <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider font-bold">ATTACK MITIGATED & DROPPED</span>
-              <div className="text-xs font-semibold text-white flex items-center gap-2 font-mono">
-                Attacker IP <strong className="text-emerald-300">{latestAlert.src_ip}</strong> is blocked in active firewall blacklist (403 Forbidden enforced)
+              <div className="text-xs font-semibold text-white flex items-center gap-2 font-mono mt-0.5">
+                Attacker IP <code className="text-emerald-300 bg-slate-900 px-2 py-0.5 rounded border border-emerald-500/30">{latestAlert.src_ip}</code> is blocked in active firewall blacklist (403 Forbidden enforced)
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 font-mono text-xs text-emerald-400 font-bold bg-emerald-900/40 px-3 py-1.5 rounded-lg border border-emerald-700/50">
+          <div className="flex items-center gap-1.5 font-mono text-xs text-emerald-400 font-bold bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-500/30 shrink-0">
             <CheckCircle className="w-4 h-4" />
-            FIREWALL ACTIVE
+            <span>FIREWALL ACTIVE</span>
           </div>
         </div>
       ) : (
-        <div className="bg-[#111827] border border-slate-800 rounded-xl px-5 py-3 flex items-center justify-between shadow-sm">
+        <div className="bg-[#111827] border border-slate-800 rounded-xl px-5 py-3 flex items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0">
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
@@ -166,7 +182,7 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
 
             <button
               onClick={onLaunchDemoAttack}
-              className="flex items-center gap-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition cursor-pointer"
               title="Simulate offline flood attack"
             >
               <Flame className="w-3.5 h-3.5 text-amber-400" />
@@ -181,7 +197,7 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
                   console.error(e);
                 }
               }}
-              className="flex items-center gap-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition cursor-pointer"
               title="Test visiting a malicious / phishing domain"
             >
               <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
@@ -198,7 +214,7 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-slate-400">
             <span>ANN THREAT PROBABILITY</span>
             <div className="flex items-center gap-1.5">
-              <span className={`w-2 h-2 rounded-full ${isAttack ? 'bg-rose-500 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
+              <span className={`w-2 h-2 rounded-full ${isAttack ? 'bg-rose-500' : 'bg-emerald-400'}`} />
               <Activity className={`w-4 h-4 ${isAttack ? 'text-rose-400' : 'text-cyan-400'}`} />
             </div>
           </div>
@@ -246,7 +262,7 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-slate-400">
             <span>NETWORK SPEED</span>
             <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               LIVE
             </div>
           </div>
