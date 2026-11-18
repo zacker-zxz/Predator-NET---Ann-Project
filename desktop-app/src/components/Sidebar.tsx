@@ -9,6 +9,7 @@ import {
   Radio,
   Wifi,
   Layers,
+  Binary,
 } from 'lucide-react';
 import { ActiveTab, Telemetry } from '../types';
 
@@ -46,6 +47,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Attack Hub (k6)',
       icon: <Flame className="w-4 h-4 text-amber-400" />,
       badge: 'DEMO',
+    },
+    {
+      id: 'algorithm',
+      label: 'Algorithm & Math',
+      icon: <Binary className="w-4 h-4" />,
+      badge: 'SPECS',
     },
     {
       id: 'studio',

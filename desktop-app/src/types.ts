@@ -137,4 +137,4 @@ export interface Telemetry {
 }
 
 
-export type ActiveTab = 'monitor' | 'packets' | 'firewall' | 'attack' | 'studio' | 'settings' | 'operations';
+export type ActiveTab = 'monitor' | 'packets' | 'firewall' | 'attack' | 'algorithm' | 'studio' | 'settings' | 'operations';

@@ -5,6 +5,7 @@ import { NetworkPacketsView } from './views/NetworkPacketsView';
 import { LiveFirewallView } from './views/LiveFirewallView';
 import { AttackSimulatorView } from './views/AttackSimulatorView';
 import { ModelStudioView } from './views/ModelStudioView';
+import { AlgorithmView } from './views/AlgorithmView';
 import { SettingsView } from './views/SettingsView';
 import { OperationsView } from './views/OperationsView';
 
@@ -290,6 +291,8 @@ export const App: React.FC = () => {
             onAttackTriggered={() => {}}
           />
         )}
+
+        {activeTab === 'algorithm' && <AlgorithmView />}
 
         {activeTab === 'studio' && <ModelStudioView />}
 
