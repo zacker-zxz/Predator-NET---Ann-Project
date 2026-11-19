@@ -675,7 +675,7 @@ export const NeuralSimulationCanvas: React.FC<NeuralCanvasProps> = ({
             <span className="text-slate-300 text-[11px]">Input Statistical Features</span>
           </div>
           {huntingMode && (
-            <div className="flex items-center gap-2 text-rose-400 font-bold text-[11px] animate-pulse">
+            <div className="flex items-center gap-2 text-rose-400 font-bold text-[11px]">
               <span className="w-2 h-2 rounded-full bg-rose-500" />
               <span>PREDATOR ABSORPTION ENGAGED</span>
             </div>

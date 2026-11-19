@@ -297,7 +297,7 @@ export const DefenseMonitorView: React.FC<DefenseMonitorProps> = ({
         <div className="bg-[#111827] p-4 rounded-xl border border-slate-800 flex flex-col justify-between shadow-md">
           <div className="flex items-center justify-between text-xs font-mono text-slate-400">
             <span>PREDATOR HUNTERS</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
           </div>
           <div className="my-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold font-mono text-emerald-400">

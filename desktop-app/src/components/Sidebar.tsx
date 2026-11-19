@@ -89,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="mx-4 my-4 p-3 bg-[#111827] rounded-xl border border-slate-800 text-xs font-mono shadow-sm">
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-slate-400 flex items-center gap-1.5 text-[11px]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
               ANN STATUS
             </span>
             <span className="text-emerald-400 font-bold text-[11px]">ACTIVE DEFENSE</span>

@@ -3,24 +3,36 @@ import {
   Settings,
   Volume2,
   VolumeX,
+  Volume1,
   Sliders,
   Cpu,
   CheckCircle,
   Wifi,
+  Play,
+  RotateCcw,
 } from 'lucide-react';
 import { fetchInterfaces, setSensitivity } from '../services/api';
-import { isSoundEnabled, setSoundEnabled } from '../services/sound';
+import {
+  isSoundEnabled,
+  setSoundEnabled,
+  getSoundVolume,
+  setSoundVolume,
+  playNeuronTick,
+  playThreatAlert,
+  playBlockSuccess,
+} from '../services/sound';
 import { Telemetry } from '../types';
 
 interface SettingsProps {
   telemetry: Telemetry;
 }
 
-export const SettingsView: React.FC<SettingsProps> = ({ telemetry }) => {
+export const SettingsView: React.FC<SettingsProps> = ({ telemetry: _telemetry }) => {
   const [interfaces, setInterfaces] = useState<{ id: string; name: string }[]>([]);
   const [selectedIface, setSelectedIface] = useState<string>('default');
   const [threshold, setThreshold] = useState<number>(0.50);
   const [sound, setSound] = useState<boolean>(isSoundEnabled());
+  const [volume, setVolume] = useState<number>(getSoundVolume());
   const [savedMsg, setSavedMsg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,6 +52,18 @@ export const SettingsView: React.FC<SettingsProps> = ({ telemetry }) => {
     const next = !sound;
     setSound(next);
     setSoundEnabled(next);
+    if (next) {
+      playNeuronTick();
+    }
+  };
+
+  const handleVolumeChange = (newVol: number) => {
+    setVolume(newVol);
+    setSoundVolume(newVol);
+    if (!sound && newVol > 0) {
+      setSound(true);
+      setSoundEnabled(true);
+    }
   };
 
   return (
@@ -50,7 +74,7 @@ export const SettingsView: React.FC<SettingsProps> = ({ telemetry }) => {
           Defense Engine Settings & Diagnostics
         </h1>
         <p className="text-xs text-slate-400 font-mono mt-0.5">
-          Configure network sniffing adapters, sensitivity thresholds, sound alerts, and GPU acceleration
+          Configure network sniffing adapters, sensitivity thresholds, sound effects, and GPU acceleration
         </p>
       </div>
 
@@ -122,27 +146,94 @@ export const SettingsView: React.FC<SettingsProps> = ({ telemetry }) => {
           </div>
         </div>
 
-        {/* Card 3: Cyber Audio Alerts */}
-        <div className="bg-[#111827] rounded-xl border border-slate-800 p-5 flex items-center justify-between shadow-xl">
+        {/* Card 3: Cyber Audio & Feedback Settings */}
+        <div className="bg-[#111827] rounded-xl border border-slate-800 p-5 flex flex-col justify-between shadow-xl">
           <div>
-            <h3 className="text-sm font-bold text-white font-mono flex items-center gap-2 mb-1">
-              {sound ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
-              CYBER AUDIO ALERT CHIMES
-            </h3>
-            <p className="text-xs text-slate-400 font-mono">
-              Synthesized tactical warning siren when volumetric attacks are detected.
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-bold text-white font-mono flex items-center gap-2">
+                {sound && volume > 0 ? (
+                  volume > 0.5 ? (
+                    <Volume2 className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <Volume1 className="w-4 h-4 text-emerald-400" />
+                  )
+                ) : (
+                  <VolumeX className="w-4 h-4 text-slate-500" />
+                )}
+                AUDIO CUES & NEURON SOUND
+              </h3>
+              <button
+                onClick={handleToggleSound}
+                className={`px-3 py-1 rounded-md text-xs font-mono font-bold transition border ${
+                  sound && volume > 0
+                    ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                    : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white'
+                }`}
+              >
+                {sound && volume > 0 ? 'ENABLED' : 'MUTED'}
+              </button>
+            </div>
+            <p className="text-xs text-slate-400 font-mono mb-3">
+              Muted tactile acoustic feedback. Soft low-frequency haptic taps on neuron inspection and mellow SOC alert chimes.
             </p>
+
+            {/* Volume slider */}
+            <div className="space-y-1.5 mb-4 bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-300">
+                <span>Master Sound Volume:</span>
+                <span className="text-emerald-400 font-bold">{Math.round(volume * 100)}%</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={volume}
+                onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                className="w-full accent-emerald-500 cursor-pointer"
+              />
+            </div>
+
+            {/* Sound preview audition buttons */}
+            <div className="space-y-2">
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                Audition Sound Effects:
+              </span>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => playNeuronTick()}
+                  className="flex items-center justify-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg text-[11px] font-mono border border-slate-700 transition"
+                  title="Soft low-frequency acoustic haptic tap"
+                >
+                  <Play className="w-3 h-3 text-emerald-400" />
+                  <span>Neuron Tap</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => playThreatAlert()}
+                  className="flex items-center justify-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg text-[11px] font-mono border border-slate-700 transition"
+                  title="Discreet mellow two-tone warning"
+                >
+                  <Play className="w-3 h-3 text-amber-400" />
+                  <span>Threat Alert</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => playBlockSuccess()}
+                  className="flex items-center justify-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg text-[11px] font-mono border border-slate-700 transition"
+                  title="Soft resolution chime"
+                >
+                  <Play className="w-3 h-3 text-cyan-400" />
+                  <span>Mitigated</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <button
-            onClick={handleToggleSound}
-            className={`px-4 py-2 rounded-lg text-xs font-mono font-bold transition border ${
-              sound
-                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
-                : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white'
-            }`}
-          >
-            {sound ? 'ENABLED' : 'MUTED'}
-          </button>
+          <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] font-mono text-slate-400 flex items-center justify-between">
+            <span>Audio profile: <strong className="text-slate-200">Acoustic Haptic Tap</strong></span>
+            <span className="text-emerald-400 font-semibold">160ms throttle active</span>
+          </div>
         </div>
 
         {/* Card 4: GPU Acceleration */}
